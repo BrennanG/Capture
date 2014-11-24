@@ -71,7 +71,7 @@ public class Player {
     */
     public Color getColor() { return color; }
     public int getNumOfPieces() { return numOfPieces; }
-    public int getPieceLocation(int piece) { return pieces[i].getLocation(); }
+    public int getPieceLocation(int piece) { return pieces[piece].getLocation(); }
     
     /**
         Private Variables
