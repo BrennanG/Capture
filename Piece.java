@@ -11,8 +11,8 @@ public class Piece {
 
     /**
         Constructs a new Piece
-        @param color sets the color of the piece
-        @param location sets the location of the piece
+        @param color the color of the piece
+        @param location the location of the piece
     */
     public Piece(Color color, int location) {
         this.color = color;
@@ -23,20 +23,17 @@ public class Piece {
     
     /**
         Moves the piece to the location set by "setMove()"
-        @return whether or not the piece moved (bool)
     */
-    public boolean move() {
+    public void move() {
         if (newLocation != null) {
             location = newLocation;
             newLocation = null;
             setJustMoved(true);
-            return true;
         }
-        return false;
     }
     
     /**
-        Sets the teh location that the piece will be moved to when "move()" is called
+        Sets the the location that the piece will be moved to when "move()" is called
         @param newLocation the location that the piece will be moved to when "move()" is called
     */
     public void setMove(int newLocation) {
@@ -45,7 +42,7 @@ public class Piece {
     
     /**
         Sets whether or not the piece was moved in the current turn
-        @param moved whether or not the piece was moved in th current turn
+        @param moved whether or not the piece was moved in the current turn
     */
     public void setJustMoved(boolean moved) {
         justMoved = moved;
@@ -57,6 +54,9 @@ public class Piece {
     public boolean getJustMoved() { return justMoved; }
     public int getLocation() { return location; }
     
+    /**
+        Private Variables
+    */
     private Color color;    // The color of the peice
     private int location;   // The piece's current location on the board
     private int newLocation;    // The location that the piece will move to when "move()" is called
