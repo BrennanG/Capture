@@ -49,6 +49,13 @@ public class Piece {
     }
     
     /**
+        @return a string representation of the Piece class
+    */
+    public String toString() {
+        return "" + color + " piece at square " + location;
+    }
+    
+    /**
         Getters
     */
     public boolean getJustMoved() { return justMoved; }

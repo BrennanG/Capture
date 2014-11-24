@@ -12,12 +12,12 @@ public class Player {
     /**
         Constructs a new Player
         @param color the color of the player's pieces
-        @param numOfPieces the starting number of pieces for the player
+        @param startingNumOfPieces the starting number of pieces for the player
         @param spawnLocations array of size numOfPieces that represents the spawn locations of each piece
     */
-    public Player(Color color, int numOfPieces, int[] spawnLocations) {
+    public Player(Color color, int startingNumOfPieces, int[] spawnLocations) {
         this.color = color;
-        this.numOfPieces = numOfPieces;
+        this.numOfPieces = this.startingNumOfPieces = startingNumOfPieces;
         
         pieces = new Piece[numOfPieces];
         for (int i = 0; i < numOfPieces; i++) {
@@ -29,7 +29,7 @@ public class Player {
         Moves all of the player's pieces to the locations set by "setMove()"
     */
     public void move() {
-        for (int i = 0; i < numOfPieces; i++) {
+        for (int i = 0; i < startingNumOfPieces; i++) {
             if (pieces[i] != null) {
                 pieces[i].move();
             }
@@ -67,16 +67,25 @@ public class Player {
     }
     
     /**
+        @return a string representation of the Player class
+    */
+    public String toString() {
+        return "" + color + " player with " + numOfPieces + " out of " + startingNumOfPieces + " pieces remaining";
+    }
+    
+    /**
         Getters
     */
     public Color getColor() { return color; }
     public int getNumOfPieces() { return numOfPieces; }
+    public int getStartingNumOfPieces() { return startingNumOfPieces; }
     public int getPieceLocation(int piece) { return pieces[piece].getLocation(); }
     
     /**
         Private Variables
     */
     private Color color;    // The color of the player's pieces
-    private int numOfPieces;    // The number of pieces that the player started with
+    private int numOfPieces;    // The number of pieces that the player currently has
+    private int startingNumOfPieces;    // The number of pieces the player started with
     private Piece[] pieces; // Array of the player's pieces
 }
