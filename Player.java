@@ -70,7 +70,30 @@ public class Player {
         @return a string representation of the Player class
     */
     public String toString() {
-        return "" + color + " player with " + numOfPieces + " out of " + startingNumOfPieces + " pieces remaining";
+        String string = "" + color + " player with " + numOfPieces + " out of " + startingNumOfPieces + " pieces remaining:\n";
+        for (int i = 0; i < startingNumOfPieces; i++) {
+            if (pieces[i] != null) {
+                string += "\tPiece " + i + ": " + pieces[i].toString() + "\n";
+            }
+        }
+        return string;
+    }
+    
+    /**
+        @param other object to be checked
+        @return boolean representing whether or not "other" is equal to the object
+    */
+    public boolean equals(Object other) {
+        if (this == other) { return true; }
+        if (other == null) { return false; }
+        if (getClass() != other.getClass()) { return false; }
+        
+        Player otherPlayer = (Player) other;
+        if (color != otherPlayer.color) { return false; }
+        for (int i = 0; i < startingNumOfPieces; i++) {
+            if (pieces[i].equals(otherPlayer.pieces[i]) == false) { return false; }
+        }
+        return true;
     }
     
     /**

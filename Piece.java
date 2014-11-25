@@ -56,6 +56,22 @@ public class Piece {
     }
     
     /**
+        @param other object to be checked
+        @return boolean representing whether or not "other" is equal to the object
+    */
+    public boolean equals(Object other) {
+        if (this == other) { return true; }
+        if (other == null) { return false; }
+        if (getClass() != other.getClass()) { return false; }
+        
+        Piece otherPiece = (Piece) other;
+        return (color == otherPiece.color) 
+            && (location == otherPiece.location)
+            && (newLocation == otherPiece.newLocation)
+            && (justMoved == otherPiece.justMoved);
+    }
+    
+    /**
         Getters
     */
     public boolean getJustMoved() { return justMoved; }
