@@ -4,6 +4,7 @@ import javax.swing.*;
 
 /**
     The Board Class
+	Contains a 2D array of Squares
 */
 
 public class Board {
@@ -11,32 +12,75 @@ public class Board {
     /**
         Constructs a new Board
         @param boardSize the total number of squares on the board
+		@param squareSize the size of each square on the board
+		@param topLeft the top-left point of the board
     */
-    public Board(int boardSize) {
+    public Board(int boardSize, int squareSize, Point topLeft) {
         this.boardSize = boardSize;
         rowSize = Math.sqrt(boardSize);
         
-        board = new Rectangle[rowSize][rowSize];
+		int x = topLeft.x;
+		int y = topLeft.y;
+        board = new Square[rowSize][rowSize];
         for (int i = 0; i < rowSize; i++) {
-            board[i] = new Rectangle[rowSize];
+            board[i] = new Square[rowSize];
             for (int j = 0; j < rowSize; j++) {
-                board[i][j] = new Rectangle(/*x, y, width, height*/);
+                board[i][j] = new Square(x, y, squareSize);
+				x += squareSize;
             }
+			y += squareSize;
+			x = topLeft.x;
         }
     }
+	
+	
     
     /**
         Checks whether a given location is on the board
         @param location location to be checked
+		@return whether or not the provided location is legal to move to
     */
-    public boolean checkLocation(int location) {
+    public boolean checkLegal(int location) {
         return location < boardSize;
     }
+	
+	/**
+		Sets the wait time at the provided location to a random int between 0 and 4
+		@param location the location to set
+		@return new wait time at the location
+	*/
+	public int setRandomWaitTime(int location) {
+		return board[(int)location/rowSize][location%rowSize].setRandomWaitTime();
+	}
+	
+	/**
+		Sets wait time at the provided location
+		@param location location to set
+		@param waitTime new waitTime for the square
+	*/
+	public void setWaitTime(int location, int waitTime) { 
+		board[(int)location/rowSize][location%rowSize].setWaitTime(waitTime); 
+	}
+	
+	/**
+		Returns to wait time at the provided location
+		@param location location to check
+		@return the wait time at the provided location
+	*/
+	public int getWaitTime(int location) { 
+		return board[(int)location/rowSize][location%rowSize].getWaitTime(); 
+	}
+	
+	/**
+		Getters
+	*/
+	public int getBoardSize() { return boardSize; }
+	public int getRowSize() { return rowSize; }
     
     /**
         Private Variables
     */
     private boardSize;  // The total number of squares on the board
     private rowSize;    // The number of squares per row (equal to the square root of "boardSize")
-    private Rectangle[][] board;  // The Board array
+    private Square[][] board;  // The Board array
 }
