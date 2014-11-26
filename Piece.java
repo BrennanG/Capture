@@ -80,7 +80,7 @@ public class Piece {
     /**
         Private Variables
     */
-    private Color color;    // The color of the peice
+    private Color color;    // The color of the piece
     private int location;   // The piece's current location on the board
     private int newLocation;    // The location that the piece will move to when "move()" is called
     private boolean justMoved;  // Boolean that represents if the piece moved in the current turn (for capturing)
