@@ -17,7 +17,7 @@ public class Piece {
     public Piece(Color color, int location) {
         this.color = color;
         this.location = location;
-        newLocation = null;
+        newLocation = prevLocation = null;
         justMoved = false;
     }
     
@@ -26,6 +26,7 @@ public class Piece {
     */
     public void move() {
         if (newLocation != null) {
+            prevLocation = location;
             location = newLocation;
             newLocation = null;
             setJustMoved(true);
@@ -68,6 +69,7 @@ public class Piece {
         return (color == otherPiece.color) 
             && (location == otherPiece.location)
             && (newLocation == otherPiece.newLocation)
+            && (prevLocation == otherPiece.prevLocation)
             && (justMoved == otherPiece.justMoved);
     }
     
@@ -76,6 +78,7 @@ public class Piece {
     */
     public boolean getJustMoved() { return justMoved; }
     public int getLocation() { return location; }
+    public int getPrevLocation() { return prevLocation; }
     
     /**
         Private Variables
@@ -83,5 +86,6 @@ public class Piece {
     private Color color;    // The color of the piece
     private int location;   // The piece's current location on the board
     private int newLocation;    // The location that the piece will move to when "move()" is called
+    private int prevLocation;   // The location of the piece prior to the most recent move()
     private boolean justMoved;  // Boolean that represents if the piece moved in the current turn (for capturing)
 }

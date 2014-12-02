@@ -88,6 +88,14 @@ public class Player {
 		this.done = done;
 	}
     
+	/**
+		Increments the current index
+		@return whether or not the counter was reset to 0
+	*/
+	public boolean incrementCurrentIndex() {
+		return counter.increment();
+	}
+    
     /**
         @return a string representation of the Player class
     */
@@ -117,14 +125,6 @@ public class Player {
         }
         return true;
     }
-	
-	/**
-		Increments the current index
-		@return whether or not the counter was reset to 0
-	*/
-	public boolean incrementCurrentIndex() {
-		return counter.increment();
-	}
     
     /**
         Getters
@@ -133,6 +133,7 @@ public class Player {
     public int getNumOfPieces() { return numOfPieces; }
     public int getStartingNumOfPieces() { return startingNumOfPieces; }
     public int getPieceLocation(int piece) { return pieces[piece].getLocation(); }
+    public int getPrevLocation(int piece) { return pieces[piece].getPrevLocation(); }
 	public int getCurrentIndex() { return counter.getValue(); }
 	public boolean isDone() { return done; }
 	public boolean getJustMoved(int piece) { return pieces[piece].getJustMoved(); }

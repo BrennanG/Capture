@@ -61,6 +61,11 @@ public class Board {
 	public void setWaitTime(int location, int waitTime) { 
 		board[(int)location/rowSize][location%rowSize].setWaitTime(waitTime); 
 	}
+    
+    public void decrementWaitTime(int location) {
+        Square temp = board[(int)location/rowSize][location%rowSize];
+        temp.setWaitTime(temp.getWaitTime() - 1);
+    }
 	
 	/**
 		Returns to wait time at the provided location

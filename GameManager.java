@@ -33,26 +33,22 @@ public class GameManager extends Component {
 		Player player = getPlayer(key);
 		if (player == null) { return; }
 		int location = player.getLocation(player.getCurrentIndex());
-		int newLocation = getNewLocation(location, key);
-		if (board.checkLegal(newLocation)) {
-			player.setMove(player.getCurrentIndex(), newLocation);
-			if (player.incrementCurrentIndex()) {
-				player.setDone(true);
-			}
-		}
-		
-		if (player1.isDone() && player2.isDone()) {
-			player1.move()
-			player2.move()
-			player1.setDone(false);
-			player2.setDone(false);
-			checkCollisions();
-			player1.setJustMoved(false);
-			player2.setJustMoved(false);
-			
-			// Redraw
-			// Check GameOver
-		}
+        if (board.getWaitTime(location) <= 0) {
+            int newLocation = getNewLocation(location, key);
+            if (board.checkLegal(newLocation)) {
+                player.setMove(player.getCurrentIndex(), newLocation);
+                if (player.incrementCurrentIndex()) {
+                    player.setDone(true);
+                }
+            }
+        }
+        else {
+            board.decrementWaitTime(location);
+            if (player.incrementCurrentIndex()) {
+                player.setDone(true);
+            }
+        }
+		endOfTurn();
 	}
 	
 	/**
@@ -85,23 +81,54 @@ public class GameManager extends Component {
 				return location;
 		}
 	}
+    
+    private void endOfTurn() {
+        if (player1.isDone() && player2.isDone()) {
+			player1.move()
+			player2.move()
+			player1.setDone(false);
+			player2.setDone(false);
+			handleCollisions();
+			player1.setJustMoved(false);
+			player2.setJustMoved(false);
+			
+			// Redraw
+            
+            boolean player1dead = (player1.getNumOfPieces() <= 0);
+            boolean player2dead = (player2.getNumOfPieces() <= 0);
+            if (player1dead && player2dead) {
+                // Tie
+            }
+            else if (player2dead) {
+                // Player 1 Wins
+            }
+            else if (player1dead) {
+                // Player 2 Wins
+            }
+		}
+    }
 	
-	private void checkCollisions() {
+	private void handleCollisions() {
 		for (int i = 0; i < player1.getStartingNumOfPieces(); i++) {
 			if (player1.pieceExists(i)) {
 				for (int j = 0; j < player2.getStartingNumOfPieces(); j++) {
 					if (player2.pieceExists(j) {
 						if (player1.getPieceLocation(i) == player2.getPieceLocation(j)) {
+                            board.setWaitTime(player1.getLocation(i), 0);
 							moved1 = player1.getJustMoved(i);
 							moved2 = player2.getJustMoved(j);
 							if (moved1 && moved2) {
+                                board.setRandomWaitTime(player1.getPrevLocation());
+                                board.setRandomWaitTime(player2.getPrevLocation());
 								player1.deletePiece(i);
 								player2.deletePiece(j);
 							}
 							else if (moved1 && !moved2) {
+                                board.setRandomWaitTime(player1.getPrevLocation());
 								player2.deletePiece(j);
 							}
 							else if (!moved1 && moved2) {
+                                board.setRandomWaitTime(player2.getPrevLocation());
 								player1.deletePiece(i);
 							}
 						}
