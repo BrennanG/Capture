@@ -2,7 +2,6 @@ import java.util.*;
 import java.awt.*;
 import javax.swing.*;
 
-
 /**
     The Player class
 */
@@ -136,6 +135,8 @@ public class Player {
     public int getPieceLocation(int piece) { return pieces[piece].getLocation(); }
 	public int getCurrentIndex() { return counter.getValue(); }
 	public boolean isDone() { return done; }
+	public boolean getJustMoved(int piece) { return pieces[piece].getJustMoved(); }
+	public boolean pieceExists(int piece) { return pieces[piece] != null; }
     
     /**
         Private Variables

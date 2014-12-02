@@ -49,6 +49,9 @@ public class GameManager extends Component {
 			checkCollisions();
 			player1.setJustMoved(false);
 			player2.setJustMoved(false);
+			
+			// Redraw
+			// Check GameOver
 		}
 	}
 	
@@ -84,7 +87,28 @@ public class GameManager extends Component {
 	}
 	
 	private void checkCollisions() {
-		
+		for (int i = 0; i < player1.getStartingNumOfPieces(); i++) {
+			if (player1.pieceExists(i)) {
+				for (int j = 0; j < player2.getStartingNumOfPieces(); j++) {
+					if (player2.pieceExists(j) {
+						if (player1.getPieceLocation(i) == player2.getPieceLocation(j)) {
+							moved1 = player1.getJustMoved(i);
+							moved2 = player2.getJustMoved(j);
+							if (moved1 && moved2) {
+								player1.deletePiece(i);
+								player2.deletePiece(j);
+							}
+							else if (moved1 && !moved2) {
+								player2.deletePiece(j);
+							}
+							else if (!moved1 && moved2) {
+								player1.deletePiece(i);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
     
     /**
