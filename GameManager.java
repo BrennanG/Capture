@@ -31,24 +31,24 @@ public class GameManager extends Component {
 	*/
 	public void handleKey(KeyEvent key) {
 		Player player = getPlayer(key);
-		if (player == null) { return; }
-		int location = player.getLocation(player.getCurrentIndex());
-        if (board.getWaitTime(location) <= 0) {
-            int newLocation = getNewLocation(location, key);
-            if (board.checkLegal(newLocation)) {
-                player.setMove(player.getCurrentIndex(), newLocation);
-                if (player.incrementCurrentIndex()) {
-                    player.setDone(true);
+		if (player == null || player.isDone()) { return; } // An unused key was pushed or player's turn in finished
+		int location = player.getPieceLocation(player.getCurrentPiece());
+        int newLocation = getNewLocation(location, key);
+        if (board.checkLegal(newLocation)) {
+            player.setMove(player.getCurrentPiece(), newLocation);
+            player.nextPieceAndUpdateDone();
+            int x;
+            for (int i = 0; i < player.getStartingNumOfPieces(); i++) {
+                x = player.isDone() ? 1 : 0;
+                if (board.getWaitTime(player.getPieceLocation(player.getCurrentPiece())) > x) {
+                    player.nextPieceAndUpdateDone();
+                }
+                else {
+                    break;
                 }
             }
-        }
-        else {
-            board.decrementWaitTime(location);
-            if (player.incrementCurrentIndex()) {
-                player.setDone(true);
-            }
-        }
-		endOfTurn();
+            checkEndOfTurn();
+        }       
 	}
 	
 	/**
@@ -82,10 +82,10 @@ public class GameManager extends Component {
 		}
 	}
     
-    private void endOfTurn() {
+    private void checkEndOfTurn() {
         if (player1.isDone() && player2.isDone()) {
-			player1.move()
-			player2.move()
+			player1.move();
+			player2.move();
 			player1.setDone(false);
 			player2.setDone(false);
 			handleCollisions();
@@ -108,7 +108,7 @@ public class GameManager extends Component {
 		}
     }
 	
-	private void handleCollisions() {
+	private void handleCollisions() {/////////////////////////////////////////////////////////////DONT FORGET SELF KILLS
 		for (int i = 0; i < player1.getStartingNumOfPieces(); i++) {
 			if (player1.pieceExists(i)) {
 				for (int j = 0; j < player2.getStartingNumOfPieces(); j++) {

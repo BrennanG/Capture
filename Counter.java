@@ -4,7 +4,7 @@ import javax.swing.*;
 
 /**
 	The Counter Class
-	When the counter reaches its max size, it is automatically reset to 0
+	When the counter reaches its max size, it is automatically reset to 0 (so it will never be at its max size)
 */
 
 public class Counter {

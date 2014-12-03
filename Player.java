@@ -89,11 +89,17 @@ public class Player {
 	}
     
 	/**
-		Increments the current index
-		@return whether or not the counter was reset to 0
+		Increments the current index to the next non-null piece and sets done to true if it looped back to the front
 	*/
-	public boolean incrementCurrentIndex() {
-		return counter.increment();
+	public void nextPieceAndUpdateDone() {
+        boolean temp = false;
+        for (int i = 0; i < startingNumOfPieces; i++) {
+            temp = (temp || counter.increment()); // temp stays true if increment() ever returns true
+            if (pieces[counter.getValue()] != null) {
+                break;
+            }
+        }
+        done = temp;
 	}
     
     /**
@@ -134,7 +140,7 @@ public class Player {
     public int getStartingNumOfPieces() { return startingNumOfPieces; }
     public int getPieceLocation(int piece) { return pieces[piece].getLocation(); }
     public int getPrevLocation(int piece) { return pieces[piece].getPrevLocation(); }
-	public int getCurrentIndex() { return counter.getValue(); }
+	public int getCurrentPiece() { return counter.getValue(); }
 	public boolean isDone() { return done; }
 	public boolean getJustMoved(int piece) { return pieces[piece].getJustMoved(); }
 	public boolean pieceExists(int piece) { return pieces[piece] != null; }
