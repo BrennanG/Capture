@@ -19,6 +19,7 @@ public class Piece {
         this.location = location;
         newLocation = prevLocation = null;
         justMoved = false;
+		delete = false;
     }
     
     /**
@@ -48,6 +49,13 @@ public class Piece {
     public void setJustMoved(boolean moved) {
         justMoved = moved;
     }
+	
+	/**
+		Sets the piece to be deleted at the end of the turn
+	*/
+	public void setDelete() {
+		delete = true;
+	}
     
     /**
         @return a string representation of the Piece class
@@ -79,6 +87,7 @@ public class Piece {
     public boolean getJustMoved() { return justMoved; }
     public int getLocation() { return location; }
     public int getPrevLocation() { return prevLocation; }
+	public boolean getDelete() { return delete; }
     
     /**
         Private Variables
@@ -88,4 +97,5 @@ public class Piece {
     private int newLocation;    // The location that the piece will move to when "move()" is called
     private int prevLocation;   // The location of the piece prior to the most recent move()
     private boolean justMoved;  // Boolean that represents if the piece moved in the current turn (for capturing)
+	private boolean delete;	// Boolean representing whether or not the piece will be deleted at the end of the turn
 }

@@ -89,6 +89,7 @@ public class GameManager extends Component {
 			player2.move();
 			player1.setDone(false);
 			player2.setDone(false);
+			setWaitTimes();
 			handleCollisions();
 			player1.setJustMoved(false);
 			player2.setJustMoved(false);
@@ -109,33 +110,54 @@ public class GameManager extends Component {
 		}
     }
 	
-	private void handleCollisions() {/////////////////////////////////////////////////////////////DONT FORGET SELF KILLS
+	private void setWaitTimes() {
 		for (int i = 0; i < player1.getStartingNumOfPieces(); i++) {
 			if (player1.pieceExists(i)) {
+				board.setRandomWaitTime(player1.getPrevLocation(i));
+			}
+			if (player2.pieceExists(i)) {
+				board.setRandomWaitTime(player2.getPrevLocation(i));
+			}
+		}
+	}
+	
+	private void handleCollisions() {
+		for (int i = 0; i < player1.getStartingNumOfPieces(); i++) {
 				for (int j = 0; j < player2.getStartingNumOfPieces(); j++) {
-					if (player2.pieceExists(j)) {
-						if (player1.getPieceLocation(i) == player2.getPieceLocation(j)) {
-                            board.setWaitTime(player1.getPieceLocation(i), 0);
-							boolean moved1 = player1.getJustMoved(i);
-							boolean moved2 = player2.getJustMoved(j);
-							if (moved1 && moved2) {
-                                board.setRandomWaitTime(player1.getPrevLocation(i));
-                                board.setRandomWaitTime(player2.getPrevLocation(j));
-								player1.deletePiece(i);
-								player2.deletePiece(j);
-							}
-							else if (moved1 && !moved2) {
-                                board.setRandomWaitTime(player1.getPrevLocation(i));
-								player2.deletePiece(j);
-							}
-							else if (!moved1 && moved2) {
-                                board.setRandomWaitTime(player2.getPrevLocation(j));
-								player1.deletePiece(i);
-							}
-						}
+					// player 1 collision with player 1
+					if (player1.pieceExists(i) && player1.getPieceLocation(i) == player1.getPieceLocation(j) && i != j) {
+						deleteCollision(player1, player1, i, j);
+					}
+				
+					// player 1 collision with player 2
+					if (player1.pieceExists(i) && player2.pieceExists(j) && player1.getPieceLocation(i) == player2.getPieceLocation(j)) {
+						deleteCollision(player1, player2, i, j);
+					}
+					
+					// player 2 collision with player 2
+					if (player2.pieceExists(i) && player2.getPieceLocation(i) == player2.getPieceLocation(j) && i != j) {
+						deleteCollision(player2, player2, i, j);
 					}
 				}
 			}
+		}
+		player1.deletePieces();
+		player2.deletePieces();
+	}
+	
+	private void deleteCollision(Player playerA, Player playerB, int i, int j) {
+		board.setWaitTime(playerA.getPieceLocation(i), 0);
+		boolean movedA = playerA.getJustMoved(i);
+		boolean movedB = playerB.getJustMoved(j);
+		if (movedA && movedB) {
+			playerA.setDeletePiece(i);
+			playerB.setDeletePiece(j);
+		}
+		else if (movedA && !movedB) {
+			playerB.setDeletePiece(j);
+		}
+		else if (!movedA && movedB) {
+			playerA.setDeletePiece(i);
 		}
 	}
     

@@ -72,13 +72,24 @@ public class Player {
 	}
     
     /**
-        Deletes the pieces
-        @param piece the piece to be deleted
+        Deletes the pieces that are set to be deleted
     */
-    public void deletePiece(int piece) {
-        pieces[piece] = null;
-		numOfPieces--;
+    public void deletePieces() {
+        for (int i = 0; i < startingNumOfPieces; i++) {
+			if (pieces[i] != null && pieces[i].getDelete()) {
+				pieces[piece] = null;
+				numOfPieces--;
+			}
+		}
     }
+	
+	/**
+		Sets the piece to be deleted at the end of the turn
+		@param piece to be deleted
+	*/
+	public void setDeletePiece(int piece) {
+		pieces[piece].setDelete();
+	}
 	
 	/**
 		Sets whether or not the player is finished with its turn
