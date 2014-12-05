@@ -55,7 +55,7 @@ public class Player {
     */
     public void setJustMoved(int piece, boolean moved) {
         if (pieces[piece] != null) {
-            pieces[piece].setJustMove(moved);
+            pieces[piece].setJustMoved(moved);
         }
     }
 	

@@ -1,5 +1,6 @@
 import java.util.*;
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
 /**
@@ -21,7 +22,7 @@ public class GameManager extends Component {
     public GameManager(int piecesPerPlayer, Color color1, Color color2, int[] spawnLocations1, int[] spawnLocations2, int boardSize) {
         player1 = new Player(color1, piecesPerPlayer, spawnLocations1);
         player2 = new Player(color2, piecesPerPlayer, spawnLocations2);
-        board = new Board(boardSize);
+        board = new Board(boardSize, 10, new Point(0,0));
 		input = new InputHandler();
     }
 	
@@ -55,12 +56,12 @@ public class GameManager extends Component {
 		Private Functions
 	*/
 	private Player getPlayer(KeyEvent key) {
-		switch (key) {
+		switch (key.getKeyCode()) {
 			// Player 1
-			case VK_W: case VK_S: case VK_A: case VK_D:
+			case KeyEvent.VK_W: case KeyEvent.VK_S: case KeyEvent.VK_A: case KeyEvent.VK_D:
 				return player1;
 			// Player 2
-			case VK_I: case VK_K: case VK_J: case VK_L:
+			case KeyEvent.VK_I: case KeyEvent.VK_K: case KeyEvent.VK_J: case KeyEvent.VK_L:
 				return player2;
 			default:
 				return null;
@@ -68,14 +69,14 @@ public class GameManager extends Component {
 	}
 	
 	private int getNewLocation(int location, KeyEvent key) {
-		switch (key) {
-			case VK_W: case VK_I:
+		switch (key.getKeyCode()) {
+			case KeyEvent.VK_W: case KeyEvent.VK_I:
 				return location - board.getRowSize();
-			case VK_S: case VK_K:
+			case KeyEvent.VK_S: case KeyEvent.VK_K:
 				return location + board.getRowSize();
-			case VK_A: case VK_J:
+			case KeyEvent.VK_A: case KeyEvent.VK_J:
 				return location - 1;
-			case VK_D: case VK_L:
+			case KeyEvent.VK_D: case KeyEvent.VK_L:
 				return location + 1;
 			default:
 				return location;
@@ -112,23 +113,23 @@ public class GameManager extends Component {
 		for (int i = 0; i < player1.getStartingNumOfPieces(); i++) {
 			if (player1.pieceExists(i)) {
 				for (int j = 0; j < player2.getStartingNumOfPieces(); j++) {
-					if (player2.pieceExists(j) {
+					if (player2.pieceExists(j)) {
 						if (player1.getPieceLocation(i) == player2.getPieceLocation(j)) {
-                            board.setWaitTime(player1.getLocation(i), 0);
-							moved1 = player1.getJustMoved(i);
-							moved2 = player2.getJustMoved(j);
+                            board.setWaitTime(player1.getPieceLocation(i), 0);
+							boolean moved1 = player1.getJustMoved(i);
+							boolean moved2 = player2.getJustMoved(j);
 							if (moved1 && moved2) {
-                                board.setRandomWaitTime(player1.getPrevLocation());
-                                board.setRandomWaitTime(player2.getPrevLocation());
+                                board.setRandomWaitTime(player1.getPrevLocation(i));
+                                board.setRandomWaitTime(player2.getPrevLocation(j));
 								player1.deletePiece(i);
 								player2.deletePiece(j);
 							}
 							else if (moved1 && !moved2) {
-                                board.setRandomWaitTime(player1.getPrevLocation());
+                                board.setRandomWaitTime(player1.getPrevLocation(i));
 								player2.deletePiece(j);
 							}
 							else if (!moved1 && moved2) {
-                                board.setRandomWaitTime(player2.getPrevLocation());
+                                board.setRandomWaitTime(player2.getPrevLocation(j));
 								player1.deletePiece(i);
 							}
 						}
