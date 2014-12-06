@@ -20,8 +20,8 @@ public class GameManager extends JFrame {
         @param boardSize the total number of squares on the board
     */
     public GameManager(int piecesPerPlayer, Color color1, Color color2, int[] spawnLocations1, int[] spawnLocations2, int boardSize) {
-        player1 = new Player(color1, piecesPerPlayer, spawnLocations1);
-        player2 = new Player(color2, piecesPerPlayer, spawnLocations2);
+        player1 = new Player(color1, color2, piecesPerPlayer, spawnLocations1);
+        player2 = new Player(color2, color1, piecesPerPlayer, spawnLocations2);
         board = new Board(boardSize, 50, new Point(0,0));
 		input = new InputHandler();
 
