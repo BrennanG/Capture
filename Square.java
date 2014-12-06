@@ -15,7 +15,7 @@ public class Square {
 		this.x = x;
 		this.y = y;
 		this.size = size;
-		waitTime = rand.nextInt(5);
+		waitTime = 0;//rand.nextInt(5);
 	}
 	
 	/**

@@ -23,11 +23,12 @@ public class GameManager extends JFrame {
         player1 = new Player(color1, color2, piecesPerPlayer, spawnLocations1);
         player2 = new Player(color2, color1, piecesPerPlayer, spawnLocations2);
         board = new Board(boardSize, 50, new Point(0,0));
-		input = new InputHandler();
+		input = new InputHandler(this);
 
 		setTitle("Capture");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       
         add(new Drawer(board, player1, player2));
+		addKeyListener(input);
         setSize(500, 500);
         setLocationRelativeTo(null); 
     }
@@ -41,13 +42,16 @@ public class GameManager extends JFrame {
 		if (player == null || player.isDone()) { return; } // An unused key was pushed or player's turn in finished
 		int location = player.getPieceLocation(player.getCurrentPiece());
         int newLocation = getNewLocation(location, key);
+		System.out.println(key.getKeyChar());
         if (board.checkLegal(newLocation)) {
+			repaint();
             player.setMove(player.getCurrentPiece(), newLocation);
             player.nextPieceAndUpdateDone();
             int x;
             for (int i = 0; i < player.getStartingNumOfPieces(); i++) {
                 x = player.isDone() ? 1 : 0;
                 if (board.getWaitTime(player.getPieceLocation(player.getCurrentPiece())) > x) {
+					board.decrementWaitTime(player.getPieceLocation(player.getCurrentPiece()));
                     player.nextPieceAndUpdateDone();
                 }
                 else {
@@ -59,7 +63,7 @@ public class GameManager extends JFrame {
 	}
 	
 	/**
-		
+		The main function
 	*/
 	public static void main(String[] args) {
     	SwingUtilities.invokeLater(new Runnable() {
@@ -78,12 +82,12 @@ public class GameManager extends JFrame {
 		Private Functions
 	*/
 	private Player getPlayer(KeyEvent key) {
-		switch (key.getKeyCode()) {
+		switch (key.getKeyChar()) {
 			// Player 1
-			case KeyEvent.VK_W: case KeyEvent.VK_S: case KeyEvent.VK_A: case KeyEvent.VK_D:
+			case 'w': case 's': case 'a': case 'd':
 				return player1;
 			// Player 2
-			case KeyEvent.VK_I: case KeyEvent.VK_K: case KeyEvent.VK_J: case KeyEvent.VK_L:
+			case 'i': case 'k': case 'j': case 'l':
 				return player2;
 			default:
 				return null;
@@ -91,14 +95,14 @@ public class GameManager extends JFrame {
 	}
 	
 	private int getNewLocation(int location, KeyEvent key) {
-		switch (key.getKeyCode()) {
-			case KeyEvent.VK_W: case KeyEvent.VK_I:
+		switch (key.getKeyChar()) {
+			case 'w': case 'i':
 				return location - board.getRowSize();
-			case KeyEvent.VK_S: case KeyEvent.VK_K:
+			case 's': case 'k':
 				return location + board.getRowSize();
-			case KeyEvent.VK_A: case KeyEvent.VK_J:
+			case 'a': case 'j':
 				return location - 1;
-			case KeyEvent.VK_D: case KeyEvent.VK_L:
+			case 'd': case 'l':
 				return location + 1;
 			default:
 				return location;
@@ -115,8 +119,6 @@ public class GameManager extends JFrame {
 			handleCollisions();
 			player1.setJustMoved(false);
 			player2.setJustMoved(false);
-			
-			// Redraw
             
             boolean player1dead = (player1.getNumOfPieces() <= 0);
             boolean player2dead = (player2.getNumOfPieces() <= 0);
@@ -129,6 +131,14 @@ public class GameManager extends JFrame {
             else if (player1dead) {
                 // Player 2 Wins
             }
+
+			player1.resetPieceCounter();
+			player2.resetPieceCounter();
+			
+			findStartingPiece(player1);
+			findStartingPiece(player2);
+			
+			repaint();
 		}
     }
 	
@@ -179,6 +189,15 @@ public class GameManager extends JFrame {
 		}
 		else if (!movedA && movedB) {
 			playerA.setDeletePiece(i);
+		}
+	}
+
+	private void findStartingPiece(Player player) {
+		for (int i = 0; i < player.getStartingNumOfPieces(); i++) {
+			if (board.getWaitTime(player.getPieceLocation(player.getCurrentPiece())) <= 0) {
+				break;
+			}
+			player.nextPieceAndUpdateDone();
 		}
 	}
     

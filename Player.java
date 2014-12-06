@@ -113,6 +113,14 @@ public class Player {
         }
         done = temp;
 	}
+
+	public void resetPieceCounter() {
+		counter.reset();
+		for (int i = 0; i < startingNumOfPieces; i++) {
+			if (pieces[i] != null) { return; }
+			counter.increment();
+		}
+	}
     
     /**
         @return a string representation of the Player class

@@ -29,6 +29,10 @@ public class PieceCounter {
 		}
 		return false;
 	}
+
+	public void reset() {
+		counter = 0;
+	}
 	
 	/**
 		Getters

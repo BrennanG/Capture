@@ -42,7 +42,7 @@ public class Board {
 		@return whether or not the provided location is legal to move to
     */
     public boolean checkLegal(int location) {
-        return location < boardSize;
+        return (location < boardSize) && (location >= 0);
     }
 	
 	/**
