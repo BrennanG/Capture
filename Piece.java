@@ -14,8 +14,9 @@ public class Piece {
         @param color the color of the piece
         @param location the location of the piece
     */
-    public Piece(Color color, int location) {
+    public Piece(Color color, Color selectedColor int location) {
         this.color = color;
+        this.selectedColor = selectedColor;
         this.location = location;
         newLocation = prevLocation = -1;
         justMoved = false;
@@ -89,10 +90,14 @@ public class Piece {
 		@param selected whether or not the piece is currently selected
 	*/
 	public void draw(Graphics2D g, int squareSize, int rowSize, boolean selected) {
-		int pieceSize = (int) (squareSize * 0.75);
 		int x = (location % rowSize) * squareSize;
 		int y = (int) (location / rowSize) * squareSize;
-		g.fillOval(x, y, pieceSize, pieceSize);
+		g.fillOval(x, y, squareSize, squareSize);
+		if (selected) {
+		    g.setColor(selectedColor);
+		    g.drawOval(x, y, squareSize, squareSize);
+		    g.setColor(color);
+		}
 	}
     
     /**
@@ -101,12 +106,13 @@ public class Piece {
     public boolean getJustMoved() { return justMoved; }
     public int getLocation() { return location; }
     public int getPrevLocation() { return prevLocation; }
-	public boolean getDelete() { return delete; }
+    public boolean getDelete() { return delete; }
     
     /**
         Private Variables
     */
     private Color color;    // The color of the piece
+    private Color selectedColor // The outline color of the piece when selected
     private int location;   // The piece's current location on the board
     private int newLocation;    // The location that the piece will move to when "move()" is called
     private int prevLocation;   // The location of the piece prior to the most recent move()
