@@ -45,19 +45,19 @@ public class Square {
 				color = Color.GREEN;
 				break;
 			case 1:
-				color = Color.BLUE;
+				color = Color.CYAN;
 				break;
 			case 2:
-				color = Color.YELLOW;
+				color = Color.BLUE;
 				break;
 			case 3:
-				color = Color.ORANGE;
+				color = Color.MAGENTA;
 				break;
 			case 4:
 				color = Color.RED;
 				break;
 			default:
-				color = Color.BLUE;
+				color = Color.GRAY;
 		}
 		g.setColor(color);
 		g.fillRect(x, y, size, size);

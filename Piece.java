@@ -92,13 +92,13 @@ public class Piece {
 	public void draw(Graphics2D g, int squareSize, int rowSize, boolean selected) {
 		int x = (location % rowSize) * squareSize;
 		int y = (int) (location / rowSize) * squareSize;
-		g.fillOval(x, y, squareSize, squareSize);
 		if (selected) {
 		    g.setColor(selectedColor);
-		    g.setStroke(new BasicStroke((int)(squareSize/6)));
-		    g.drawOval(x, y, squareSize, squareSize);
+		    g.fillOval(x, y, squareSize, squareSize);
 		    g.setColor(color);
 		}
+		int pieceSize = (int)(squareSize * 0.85);
+		g.fillOval(x + ((squareSize - pieceSize) / 2), y + ((squareSize - pieceSize) / 2), pieceSize, pieceSize);
 	}
     
     /**
