@@ -77,7 +77,7 @@ public class Player {
     public void deletePieces() {
         for (int i = 0; i < startingNumOfPieces; i++) {
 			if (pieces[i] != null && pieces[i].getDelete()) {
-				pieces[piece] = null;
+				pieces[i] = null;
 				numOfPieces--;
 			}
 		}

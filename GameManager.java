@@ -123,21 +123,20 @@ public class GameManager extends Component {
 	
 	private void handleCollisions() {
 		for (int i = 0; i < player1.getStartingNumOfPieces(); i++) {
-				for (int j = 0; j < player2.getStartingNumOfPieces(); j++) {
-					// player 1 collision with player 1
-					if (player1.pieceExists(i) && player1.getPieceLocation(i) == player1.getPieceLocation(j) && i != j) {
-						deleteCollision(player1, player1, i, j);
-					}
+			for (int j = 0; j < player2.getStartingNumOfPieces(); j++) {
+				// player 1 collision with player 1
+				if (player1.pieceExists(i) && player1.getPieceLocation(i) == player1.getPieceLocation(j) && i != j) {
+					deleteCollision(player1, player1, i, j);
+				}
 				
-					// player 1 collision with player 2
-					if (player1.pieceExists(i) && player2.pieceExists(j) && player1.getPieceLocation(i) == player2.getPieceLocation(j)) {
-						deleteCollision(player1, player2, i, j);
-					}
+				// player 1 collision with player 2
+				if (player1.pieceExists(i) && player2.pieceExists(j) && player1.getPieceLocation(i) == player2.getPieceLocation(j)) {
+					deleteCollision(player1, player2, i, j);
+				}
 					
-					// player 2 collision with player 2
-					if (player2.pieceExists(i) && player2.getPieceLocation(i) == player2.getPieceLocation(j) && i != j) {
-						deleteCollision(player2, player2, i, j);
-					}
+				// player 2 collision with player 2
+				if (player2.pieceExists(i) && player2.getPieceLocation(i) == player2.getPieceLocation(j) && i != j) {
+					deleteCollision(player2, player2, i, j);
 				}
 			}
 		}

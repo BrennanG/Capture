@@ -17,7 +17,7 @@ public class Piece {
     public Piece(Color color, int location) {
         this.color = color;
         this.location = location;
-        newLocation = prevLocation = null;
+        newLocation = prevLocation = -1;
         justMoved = false;
 		delete = false;
     }
@@ -26,10 +26,10 @@ public class Piece {
         Moves the piece to the location set by "setMove()"
     */
     public void move() {
-        if (newLocation != null) {
+        if (newLocation >= 0) {
             prevLocation = location;
             location = newLocation;
-            newLocation = null;
+            newLocation = -1;
             setJustMoved(true);
         }
     }
