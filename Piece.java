@@ -14,7 +14,7 @@ public class Piece {
         @param color the color of the piece
         @param location the location of the piece
     */
-    public Piece(Color color, Color selectedColor int location) {
+    public Piece(Color color, Color selectedColor, int location) {
         this.color = color;
         this.selectedColor = selectedColor;
         this.location = location;
@@ -112,7 +112,7 @@ public class Piece {
         Private Variables
     */
     private Color color;    // The color of the piece
-    private Color selectedColor // The outline color of the piece when selected
+    private Color selectedColor; // The outline color of the piece when selected
     private int location;   // The piece's current location on the board
     private int newLocation;    // The location that the piece will move to when "move()" is called
     private int prevLocation;   // The location of the piece prior to the most recent move()
