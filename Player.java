@@ -14,15 +14,16 @@ public class Player {
         @param startingNumOfPieces the starting number of pieces for the player
         @param spawnLocations array of size numOfPieces that represents the spawn locations of each piece
     */
-    public Player(Color color, int startingNumOfPieces, int[] spawnLocations) {
+    public Player(Color color, Color selectedColor, int startingNumOfPieces, int[] spawnLocations) {
         this.color = color;
+        this.selectedColor = selectedColor;
         this.numOfPieces = this.startingNumOfPieces = startingNumOfPieces;
 		counter = new PieceCounter(numOfPieces);
 		done = false;
         
         pieces = new Piece[numOfPieces];
         for (int i = 0; i < numOfPieces; i++) {
-            pieces[i] = new Piece(color, spawnLocations[i]);
+            pieces[i] = new Piece(color, selectedColor, spawnLocations[i]);
         }
     }
     
@@ -176,6 +177,7 @@ public class Player {
         Private Variables
     */
     private Color color;    // The color of the player's pieces
+    private Color selectedColor; // The color of the player's piece's outline when selected
     private int numOfPieces;    // The number of pieces that the player currently has
     private int startingNumOfPieces;    // The number of pieces the player started with
     private Piece[] pieces; // Array of the player's pieces
