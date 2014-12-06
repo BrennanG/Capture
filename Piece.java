@@ -95,6 +95,7 @@ public class Piece {
 		g.fillOval(x, y, squareSize, squareSize);
 		if (selected) {
 		    g.setColor(selectedColor);
+		    g.setStroke(new BasicStroke((int)(squareSize/6)));
 		    g.drawOval(x, y, squareSize, squareSize);
 		    g.setColor(color);
 		}
