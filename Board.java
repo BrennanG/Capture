@@ -18,6 +18,7 @@ public class Board {
     public Board(int boardSize, int squareSize, Point topLeft) {
         this.boardSize = boardSize;
         rowSize = (int) Math.sqrt(boardSize);
+		this.squareSize = squareSize;
         
 		int x = topLeft.x;
 		int y = topLeft.y;
@@ -93,11 +94,13 @@ public class Board {
 	*/
 	public int getBoardSize() { return boardSize; }
 	public int getRowSize() { return rowSize; }
+	public int getSquareSize() { return squareSize; }
     
     /**
         Private Variables
     */
     private int boardSize;  // The total number of squares on the board
     private int rowSize;    // The number of squares per row (equal to the square root of "boardSize")
+	private int squareSize;	// The size of the squares
     private Square[][] board;  // The Board array
 }

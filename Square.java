@@ -39,27 +39,27 @@ public class Square {
 
 	*/
 	public void draw(Graphics2D g) {
-		/*Color color;
+		Color color;
 		switch (waitTime) {
 			case 0:
 				color = Color.GREEN;
 				break;
 			case 1:
-				color = Color.CYAN;
-				break;
-			case 2:
 				color = Color.BLUE;
 				break;
-			case 3:
+			case 2:
 				color = Color.YELLOW;
+				break;
+			case 3:
+				color = Color.ORANGE;
 				break;
 			case 4:
 				color = Color.RED;
 				break;
 			default:
-				color = Color.GRAY;
-		}*/
-		g.setColor(Color.BLACK);
+				color = Color.BLUE;
+		}
+		g.setColor(color);
 		g.fillRect(x, y, size, size);
 	}
 	

@@ -146,9 +146,17 @@ public class Player {
 	/**
 		Draws the player's pieces
 		@param g the Graphics2D that the player's pieces should be drawn to
+		@param squareSize the size of the square that the piece will be drawn onto
+		@param rowSize the number of squares per row on the board
 	*/
-	public void draw(Graphics2D g) {
-		
+	public void draw(Graphics2D g, int squareSize, int rowSize) {
+		g.setColor(color);
+		for (int i = 0; i < startingNumOfPieces; i++) {
+			if (pieces[i] != null) {
+				boolean selected = (i == counter.getValue()) ? true : false;
+				pieces[i].draw(g, squareSize, rowSize, selected);
+			}
+		}
 	}
     
     /**

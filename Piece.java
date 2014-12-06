@@ -80,6 +80,20 @@ public class Piece {
             && (prevLocation == otherPiece.prevLocation)
             && (justMoved == otherPiece.justMoved);
     }
+
+	/**
+		Draws the piece
+		@param g the Graphics2D that the piece should be drawn to
+		@param squareSize the size of the square that the piece will be drawn onto
+		@param rowSize the number of squares per row on the board
+		@param selected whether or not the piece is currently selected
+	*/
+	public void draw(Graphics2D g, int squareSize, int rowSize, boolean selected) {
+		int pieceSize = (int) (squareSize * 0.75);
+		int x = (location % rowSize) * squareSize;
+		int y = (int) (location / rowSize) * squareSize;
+		g.fillOval(x, y, pieceSize, pieceSize);
+	}
     
     /**
         Getters
