@@ -75,6 +75,18 @@ public class Board {
 	public int getWaitTime(int location) { 
 		return board[(int)location/rowSize][location%rowSize].getWaitTime(); 
 	}
+
+	/**
+		Draws the board
+		@param g the Graphics2D that the board should be drawn to
+	*/
+	public void draw(Graphics2D g) {
+		for (int i = 0; i < rowSize; i++) {
+			for (int j = 0; j < rowSize; j++) {
+				board[i][j].draw(g);
+			}
+		}
+	}
 	
 	/**
 		Getters

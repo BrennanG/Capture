@@ -17,7 +17,7 @@ public class Player {
     public Player(Color color, int startingNumOfPieces, int[] spawnLocations) {
         this.color = color;
         this.numOfPieces = this.startingNumOfPieces = startingNumOfPieces;
-		counter = new Counter(numOfPieces);
+		counter = new PieceCounter(numOfPieces);
 		done = false;
         
         pieces = new Piece[numOfPieces];
@@ -142,6 +142,14 @@ public class Player {
         }
         return true;
     }
+
+	/**
+		Draws the player's pieces
+		@param g the Graphics2D that the player's pieces should be drawn to
+	*/
+	public void draw(Graphics2D g) {
+		
+	}
     
     /**
         Getters
@@ -163,6 +171,6 @@ public class Player {
     private int numOfPieces;    // The number of pieces that the player currently has
     private int startingNumOfPieces;    // The number of pieces the player started with
     private Piece[] pieces; // Array of the player's pieces
-	private Counter counter;	// The player's counter
+	private PieceCounter counter;	// The player's counter
 	private boolean done;	// Whether or not the player's turn is finished
 }

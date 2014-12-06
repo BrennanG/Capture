@@ -11,10 +11,10 @@ public class Square {
 	/**
 		Constructs a new Square
 	*/
-	public Square(int size, int width, int height) {
+	public Square(int x, int y, int size) {
+		this.x = x;
+		this.y = y;
 		this.size = size;
-		this.width = width;
-		this.height = height;
 		waitTime = rand.nextInt(5);
 	}
 	
@@ -34,21 +34,49 @@ public class Square {
 		waitTime = rand.nextInt(5);
 		return waitTime;
 	}
+
+	/**
+
+	*/
+	public void draw(Graphics2D g) {
+		/*Color color;
+		switch (waitTime) {
+			case 0:
+				color = Color.GREEN;
+				break;
+			case 1:
+				color = Color.CYAN;
+				break;
+			case 2:
+				color = Color.BLUE;
+				break;
+			case 3:
+				color = Color.YELLOW;
+				break;
+			case 4:
+				color = Color.RED;
+				break;
+			default:
+				color = Color.GRAY;
+		}*/
+		g.setColor(Color.BLACK);
+		g.fillRect(x, y, size, size);
+	}
 	
 	/**
 		Getters
 	*/
 	public int getSize() { return size; }
-	public int getWidth() { return width; }
-	public int getHeight() { return height; }
+	public int getX() { return x; }
+	public int getY() { return y; }
 	public int getWaitTime() { return waitTime; }
 	
 	/**
 		Private Variables
 	*/
 	private int size;
-	private int width;
-	private int height;
+	private int x;
+	private int y;
 	private int waitTime;
 	private static final Random rand = new Random();
 }

@@ -8,7 +8,7 @@ import javax.swing.*;
     Handles the main logic of the game
 */
 
-public class GameManager extends Component {
+public class GameManager extends JFrame {
     
     /**
         Constructs a new GameManager
@@ -22,8 +22,14 @@ public class GameManager extends Component {
     public GameManager(int piecesPerPlayer, Color color1, Color color2, int[] spawnLocations1, int[] spawnLocations2, int boardSize) {
         player1 = new Player(color1, piecesPerPlayer, spawnLocations1);
         player2 = new Player(color2, piecesPerPlayer, spawnLocations2);
-        board = new Board(boardSize, 10, new Point(0,0));
+        board = new Board(boardSize, 50, new Point(0,0));
 		input = new InputHandler();
+
+		setTitle("Capture");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       
+        add(new Drawer(board, player1, player2));
+        setSize(500, 500);
+        setLocationRelativeTo(null); 
     }
 	
 	/**
@@ -51,6 +57,22 @@ public class GameManager extends Component {
             checkEndOfTurn();
         }       
 	}
+	
+	/**
+		
+	*/
+	public static void main(String[] args) {
+    	SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                int[] spawns1 = {9, 36, 63};
+				int[] spawns2 = {17, 44, 71};
+                GameManager g = new GameManager(3, Color.WHITE, Color.BLACK, spawns1, spawns2, 81);
+                g.setVisible(true);
+            }
+        });
+    }
+	
 	
 	/**
 		Private Functions
