@@ -15,7 +15,7 @@ public class Square {
 		this.x = x;
 		this.y = y;
 		this.size = size;
-		waitTime = 0;//rand.nextInt(5);
+		waitTime = rand.nextInt(5);
 	}
 	
 	/**
@@ -35,8 +35,12 @@ public class Square {
 		return waitTime;
 	}
 
-	/**
+	public void decrementWaitTime() {
+		waitTime--;
+	}
 
+	/**
+		Draws the square
 	*/
 	public void draw(Graphics2D g) {
 		Color color;

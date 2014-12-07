@@ -104,9 +104,9 @@ public class Player {
 		Increments the current index to the next non-null piece and sets done to true if it looped back to the front
 	*/
 	public void nextPieceAndUpdateDone() {
-        boolean temp = false;
+        boolean temp = done;
         for (int i = 0; i < startingNumOfPieces; i++) {
-            temp = (temp || counter.increment()); // temp stays true if increment() ever returns true
+            temp = (counter.increment() || temp); // temp stays true if increment() ever returns true
             if (pieces[counter.getValue()] != null) {
                 break;
             }
@@ -162,7 +162,7 @@ public class Player {
 		g.setColor(color);
 		for (int i = 0; i < startingNumOfPieces; i++) {
 			if (pieces[i] != null) {
-				boolean selected = (i == counter.getValue()) ? true : false;
+				boolean selected = (i == counter.getValue() && done == false) ? true : false;
 				pieces[i].draw(g, squareSize, rowSize, selected);
 			}
 		}

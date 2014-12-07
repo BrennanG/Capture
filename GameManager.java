@@ -24,6 +24,7 @@ public class GameManager extends JFrame {
         player2 = new Player(color2, color1, piecesPerPlayer, spawnLocations2);
         board = new Board(boardSize, 50, new Point(0,0));
 		input = new InputHandler(this);
+		winner = 0;
 
 		setTitle("Capture");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       
@@ -39,11 +40,11 @@ public class GameManager extends JFrame {
 	*/
 	public void handleKey(KeyEvent key) {
 		Player player = getPlayer(key);
-		if (player == null || player.isDone()) { return; } // An unused key was pushed or player's turn in finished
+		if (player == null || winner > 0) { return; } // An unused key was pushed or player's turn in finished
 		int location = player.getPieceLocation(player.getCurrentPiece());
         int newLocation = getNewLocation(location, key);
-		System.out.println(key.getKeyChar());
-        if (board.checkLegal(newLocation)) {
+        if (board.checkLegal(newLocation) && player.isDone() == false) {
+			System.out.println(key.getKeyChar());
 			repaint();
             player.setMove(player.getCurrentPiece(), newLocation);
             player.nextPieceAndUpdateDone();
@@ -51,15 +52,14 @@ public class GameManager extends JFrame {
             for (int i = 0; i < player.getStartingNumOfPieces(); i++) {
                 x = player.isDone() ? 1 : 0;
                 if (board.getWaitTime(player.getPieceLocation(player.getCurrentPiece())) > x) {
-					board.decrementWaitTime(player.getPieceLocation(player.getCurrentPiece()));
                     player.nextPieceAndUpdateDone();
                 }
                 else {
                     break;
                 }
             }
-            checkEndOfTurn();
-        }       
+        }
+		checkEndOfTurn();    
 	}
 	
 	/**
@@ -123,13 +123,13 @@ public class GameManager extends JFrame {
             boolean player1dead = (player1.getNumOfPieces() <= 0);
             boolean player2dead = (player2.getNumOfPieces() <= 0);
             if (player1dead && player2dead) {
-                // Tie
+                winner = 3;
             }
             else if (player2dead) {
-                // Player 1 Wins
+                winner = 1;
             }
             else if (player1dead) {
-                // Player 2 Wins
+                winner = 2;
             }
 
 			player1.resetPieceCounter();
@@ -145,10 +145,20 @@ public class GameManager extends JFrame {
 	private void setWaitTimes() {
 		for (int i = 0; i < player1.getStartingNumOfPieces(); i++) {
 			if (player1.pieceExists(i)) {
-				board.setRandomWaitTime(player1.getPrevLocation(i));
+				if (player1.getJustMoved(i)) {
+					board.setRandomWaitTime(player1.getPrevLocation(i));
+				}
+				else {
+					board.decrementWaitTime(player1.getPieceLocation(i));
+				}
 			}
 			if (player2.pieceExists(i)) {
-				board.setRandomWaitTime(player2.getPrevLocation(i));
+				if (player2.getJustMoved(i)) {
+					board.setRandomWaitTime(player2.getPrevLocation(i));
+				}
+				else {
+					board.decrementWaitTime(player2.getPieceLocation(i));
+				}
 			}
 		}
 	}
@@ -157,7 +167,7 @@ public class GameManager extends JFrame {
 		for (int i = 0; i < player1.getStartingNumOfPieces(); i++) {
 			for (int j = 0; j < player2.getStartingNumOfPieces(); j++) {
 				// player 1 collision with player 1
-				if (player1.pieceExists(i) && player1.getPieceLocation(i) == player1.getPieceLocation(j) && i != j) {
+				if (player1.pieceExists(i) && player1.pieceExists(j) && player1.getPieceLocation(i) == player1.getPieceLocation(j) && i != j) {
 					deleteCollision(player1, player1, i, j);
 				}
 				
@@ -167,7 +177,7 @@ public class GameManager extends JFrame {
 				}
 					
 				// player 2 collision with player 2
-				if (player2.pieceExists(i) && player2.getPieceLocation(i) == player2.getPieceLocation(j) && i != j) {
+				if (player2.pieceExists(i) && player1.pieceExists(j) && player2.getPieceLocation(i) == player2.getPieceLocation(j) && i != j) {
 					deleteCollision(player2, player2, i, j);
 				}
 			}
@@ -194,10 +204,13 @@ public class GameManager extends JFrame {
 
 	private void findStartingPiece(Player player) {
 		for (int i = 0; i < player.getStartingNumOfPieces(); i++) {
-			if (board.getWaitTime(player.getPieceLocation(player.getCurrentPiece())) <= 0) {
+			if (player.isDone() == false && board.getWaitTime(player.getPieceLocation(player.getCurrentPiece())) <= 0) {
 				break;
 			}
 			player.nextPieceAndUpdateDone();
+			if (i == player.getStartingNumOfPieces()) { // None of the pieces can move on the turn
+				player.setDone(true);
+			}
 		}
 	}
     
@@ -208,4 +221,5 @@ public class GameManager extends JFrame {
     private Player player2; // Player 2
     private Board board;    // The Board
 	private InputHandler input;	// InputHandler
+	private int winner;
 }

@@ -64,8 +64,7 @@ public class Board {
 	}
     
     public void decrementWaitTime(int location) {
-        Square temp = board[(int)location/rowSize][location%rowSize];
-        temp.setWaitTime(temp.getWaitTime() - 1);
+        board[(int)location/rowSize][location%rowSize].decrementWaitTime();
     }
 	
 	/**
