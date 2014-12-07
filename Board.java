@@ -15,7 +15,7 @@ public class Board {
 		@param squareSize the size of each square on the board
 		@param topLeft the top-left point of the board
     */
-    public Board(int boardSize, int squareSize, Point topLeft) {
+    public Board(int boardSize, int squareSize, Point topLeft, int[] spawnLocations1, int[] spawnLocations2, int piecesPerPlayer) {
         this.boardSize = boardSize;
         rowSize = (int) Math.sqrt(boardSize);
 		this.squareSize = squareSize;

@@ -19,19 +19,39 @@ public class GameManager extends JFrame {
         @param spawnLocations2 array of spawn locations for player2's pieces
         @param boardSize the total number of squares on the board
     */
-    public GameManager(int piecesPerPlayer, Color color1, Color color2, int[] spawnLocations1, int[] spawnLocations2, int boardSize) {
-        player1 = new Player(color1, color2, piecesPerPlayer, spawnLocations1);
-        player2 = new Player(color2, color1, piecesPerPlayer, spawnLocations2);
-        board = new Board(boardSize, 50, new Point(0,0));
+    public GameManager(int piecesPerPlayer, Color color1, Color color2, int[] spawnLocations1, int[] spawnLocations2, int boardSize, int squareSize) {
+        player1 = new Player(color1, Color.BLACK, piecesPerPlayer, spawnLocations1);
+        player2 = new Player(color2, Color.BLACK, piecesPerPlayer, spawnLocations2);
+        board = new Board(boardSize, squareSize, new Point(0,0), spawnLocations1, spawnLocations2, piecesPerPlayer);
 		input = new InputHandler(this);
 		winner = 0;
 
+		for (int i = 0; i < piecesPerPlayer; i++) {
+			board.setWaitTime(spawnLocations1[i], 0);
+			board.setWaitTime(spawnLocations2[i], 0);
+		}
+
 		setTitle("Capture");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       
-        add(new Drawer(board, player1, player2));
+        add(new Drawer(board, player1, player2, this));
 		addKeyListener(input);
-        setSize(500, 500);
+        setSize(SCREEN_SIZE, SCREEN_SIZE);
         setLocationRelativeTo(null); 
+    }
+
+	/**
+		The main function
+	*/
+	public static void main(String[] args) {
+    	SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                int[] spawns1 = {9, 36, 63};
+				int[] spawns2 = {17, 44, 71};
+                GameManager g = new GameManager(PIECES_PER_PLAYER, Color.WHITE, Color.YELLOW, spawns1, spawns2, BOARD_SIZE, SQUARE_SIZE);
+                g.setVisible(true);
+            }
+        });
     }
 	
 	/**
@@ -40,11 +60,11 @@ public class GameManager extends JFrame {
 	*/
 	public void handleKey(KeyEvent key) {
 		Player player = getPlayer(key);
-		if (player == null || winner > 0) { return; } // An unused key was pushed or player's turn in finished
+		if (player == null || winner > 0) { return; } // An unused key was pushed or the game is over
 		int location = player.getPieceLocation(player.getCurrentPiece());
         int newLocation = getNewLocation(location, key);
+		if (newLocation == -1) { return; }	// The new location was off the board
         if (board.checkLegal(newLocation) && player.isDone() == false) {
-			System.out.println(key.getKeyChar());
 			repaint();
             player.setMove(player.getCurrentPiece(), newLocation);
             player.nextPieceAndUpdateDone();
@@ -61,22 +81,6 @@ public class GameManager extends JFrame {
         }
 		checkEndOfTurn();    
 	}
-	
-	/**
-		The main function
-	*/
-	public static void main(String[] args) {
-    	SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                int[] spawns1 = {9, 36, 63};
-				int[] spawns2 = {17, 44, 71};
-                GameManager g = new GameManager(3, Color.WHITE, Color.BLACK, spawns1, spawns2, 81);
-                g.setVisible(true);
-            }
-        });
-    }
-	
 	
 	/**
 		Private Functions
@@ -97,15 +101,19 @@ public class GameManager extends JFrame {
 	private int getNewLocation(int location, KeyEvent key) {
 		switch (key.getKeyChar()) {
 			case 'w': case 'i':
+				if ((int)(location / board.getRowSize()) < 1) { return -1; }
 				return location - board.getRowSize();
 			case 's': case 'k':
+				if ((int)(location / board.getRowSize()) > board.getBoardSize() - board.getRowSize()) { return -1; }
 				return location + board.getRowSize();
 			case 'a': case 'j':
+				if (location % board.getRowSize() == 0) { return -1; }
 				return location - 1;
 			case 'd': case 'l':
+				if (location % board.getRowSize() == board.getRowSize() - 1) { return -1; }
 				return location + 1;
 			default:
-				return location;
+				return -1;
 		}
 	}
     
@@ -131,12 +139,13 @@ public class GameManager extends JFrame {
             else if (player1dead) {
                 winner = 2;
             }
-
-			player1.resetPieceCounter();
-			player2.resetPieceCounter();
+			else {
+				player1.resetPieceCounter();
+				player2.resetPieceCounter();
 			
-			findStartingPiece(player1);
-			findStartingPiece(player2);
+				findStartingPiece(player1);
+				findStartingPiece(player2);
+			}
 			
 			repaint();
 		}
@@ -177,7 +186,7 @@ public class GameManager extends JFrame {
 				}
 					
 				// player 2 collision with player 2
-				if (player2.pieceExists(i) && player1.pieceExists(j) && player2.getPieceLocation(i) == player2.getPieceLocation(j) && i != j) {
+				if (player2.pieceExists(i) && player2.pieceExists(j) && player2.getPieceLocation(i) == player2.getPieceLocation(j) && i != j) {
 					deleteCollision(player2, player2, i, j);
 				}
 			}
@@ -213,6 +222,11 @@ public class GameManager extends JFrame {
 			}
 		}
 	}
+
+	/**
+		Getters
+	*/
+	public int getWinner() { return winner; }
     
     /**
         Private Variables
@@ -221,5 +235,10 @@ public class GameManager extends JFrame {
     private Player player2; // Player 2
     private Board board;    // The Board
 	private InputHandler input;	// InputHandler
-	private int winner;
+	private int winner;		// The winner of the game
+	// Constants
+	private final static int SCREEN_SIZE = 650;
+	private final static int BOARD_SIZE = 81;
+	private final static int SQUARE_SIZE = 50;
+	private final static int PIECES_PER_PLAYER = 3;
 }
