@@ -85,6 +85,7 @@ public class GameManager extends JFrame {
 	/**
 		Private Functions
 	*/
+    // Returns the player to handle or null based on which key is presses
 	private Player getPlayer(KeyEvent key) {
 		switch (key.getKeyChar()) {
 			// Player 1
@@ -98,6 +99,7 @@ public class GameManager extends JFrame {
 		}
 	}
 	
+    // Returns the new location based on the old location and the key that was pressed. Returns -1 if it would be off the board
 	private int getNewLocation(int location, KeyEvent key) {
 		switch (key.getKeyChar()) {
 			case 'w': case 'i':
@@ -117,6 +119,7 @@ public class GameManager extends JFrame {
 		}
 	}
     
+    // Checks if both players are done. If they are, then pieces are moved, collision is checked and handled, etc.
     private void checkEndOfTurn() {
         if (player1.isDone() && player2.isDone()) {
 			player1.move();
@@ -151,6 +154,7 @@ public class GameManager extends JFrame {
 		}
     }
 	
+    // Sets the new wait times of squares
 	private void setWaitTimes() {
 		for (int i = 0; i < player1.getStartingNumOfPieces(); i++) {
 			if (player1.pieceExists(i)) {
@@ -172,6 +176,7 @@ public class GameManager extends JFrame {
 		}
 	}
 	
+    // Handles collisions between pieces
 	private void handleCollisions() {
 		for (int i = 0; i < player1.getStartingNumOfPieces(); i++) {
 			for (int j = 0; j < player2.getStartingNumOfPieces(); j++) {
@@ -195,6 +200,7 @@ public class GameManager extends JFrame {
 		player2.deletePieces();
 	}
 	
+    // Deletes the colliding pieces
 	private void deleteCollision(Player playerA, Player playerB, int i, int j) {
 		board.setWaitTime(playerA.getPieceLocation(i), 0);
 		boolean movedA = playerA.getJustMoved(i);
@@ -211,6 +217,7 @@ public class GameManager extends JFrame {
 		}
 	}
 
+    // Iterates to a proper starting piece for the beginning of each turn
 	private void findStartingPiece(Player player) {
 		for (int i = 0; i < player.getStartingNumOfPieces(); i++) {
 			if (player.isDone() == false && board.getWaitTime(player.getPieceLocation(player.getCurrentPiece())) <= 0) {

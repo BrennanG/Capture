@@ -30,6 +30,9 @@ public class PieceCounter {
 		return false;
 	}
 
+    /**
+        Resets the counter to 0
+    */
 	public void reset() {
 		counter = 0;
 	}
@@ -42,6 +45,6 @@ public class PieceCounter {
 	/**
 		Private Variables
 	*/
-	private int size;
-	private int counter;
+	private int size;   // The maximum size
+	private int counter;    // The current value of the counter
 }

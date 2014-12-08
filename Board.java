@@ -63,6 +63,10 @@ public class Board {
 		board[(int)location/rowSize][location%rowSize].setWaitTime(waitTime); 
 	}
     
+    /**
+        Decreases the wait time by 1
+        @param location the location to decrease
+    */
     public void decrementWaitTime(int location) {
         board[(int)location/rowSize][location%rowSize].decrementWaitTime();
     }

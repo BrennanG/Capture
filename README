@@ -16,5 +16,5 @@ Capture
 	-The objective of the game is to capture all of the opposing player's pieces.
 	-To capture a piece, one of your pieces must land on the square that it is on.
 	-When you capture a piece, the square that you captured it on will automatically be set to Green.
-	-Players can capture their own pieces, which can be used strategically, because the square that it is captured on is set to 0.
+	-Players can capture their own pieces, which can be used strategically, because the square that it is captured on is set to Green.
 	-If two pieces land on the same square on the same turn, both are captured.
