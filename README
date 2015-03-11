@@ -1,5 +1,5 @@
 Capture
--Made by Brennan Govreau in the fall 2014 semester at Saint Louis Universtiy for CSCI 293: Object-Oriented Software Design
+-Made by Brennan Govreau in the fall 2014 semester at Saint Louis Universtiy for CSCI 290: Object-Oriented Software Design
 -To run the game, open a terminal and go to the game's directory. Type "javac GameManager.java", then "java GameManager"
 -How to Play:
 	-Player 1 (white) moves its pieces using the keys W, A, S, and D. Player 2 (yellow) uses I, J, K and L.
